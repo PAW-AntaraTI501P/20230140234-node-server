@@ -8,8 +8,10 @@ const todoRoutes = require("./routes/todo.js");
 const { todos } = require("./routes/todo.js");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/todos", todoRoutes);
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
   res.render("index");
