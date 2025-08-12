@@ -2,16 +2,17 @@ require("dotenv").config();
 const express = require("express");
 
 const app = express();
-const port = process.env.PORT
 
-const todoRoutes = require("./routes/todo.js");
+const todoRoutes = require("./routes/tododb.js");
 const { todos } = require("./routes/todo.js");
+const db = require("./database/db.js");
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/todos", todoRoutes);
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+// app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -23,6 +24,15 @@ app.get("/contact", (req, res) => {
 
 app.get("/todos", (req, res) => {
   res.json(todos);
+});
+
+app.get("/todo-view", (req, res) => {
+  db.query("SELECT * FROM todos", (err, todos) => {
+    if (err) return res.status(500).send("Internal Server Error");
+    res.render("todo", {
+      todos: todos,
+    });
+  });
 });
 
 app.get("/todos-list", (req, res) => {
