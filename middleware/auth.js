@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
         .json({ message: "Token format is incorrect, authorization denied" });
     }
     try {
-        const decoded = jwt.verify(token, "your_super_secret_jwt_key");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (e) {
