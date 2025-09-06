@@ -14,7 +14,7 @@ app.use(expressLayouts);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use("/todos", todoRoutes);
+// app.use("/todos", todoRoutes);
 app.set("view engine", "ejs");
 app.use("/api/auth", authRoutes);
 app.use("/api/todos", authMiddleware, todoRoutes);
