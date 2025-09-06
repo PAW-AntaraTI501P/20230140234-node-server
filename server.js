@@ -1,20 +1,23 @@
 require("dotenv").config();
 const express = require("express");
-
 const app = express();
-
 const todoRoutes = require("./routes/tododb.js");
 const { todos } = require("./routes/todo.js");
 const db = require("./database/db.js");
 const port = process.env.PORT;
-
+const authRoutes = require("./routes/auth.js");
+const authMiddleware = require("./middleware/auth.js");
+const cors = require("cors");
 const expressLayouts = require("express-ejs-layouts");
+const auth = require("./middleware/auth.js");
 app.use(expressLayouts);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use("/todos", todoRoutes);
 app.set("view engine", "ejs");
+app.use("/api/auth", authRoutes);
+app.use("/api/todos", authMiddleware, todoRoutes);
 // app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
